@@ -1,0 +1,28 @@
+# Machine Learning in Elixir
+
+## Section
+
+Learning path for ML in Elixir
+
+* Supervised Learning
+  * Linear Regression
+    * Model Representation
+    * Cost function
+    * Gradient Descent
+  * Linear Regression with multiple input variables
+    * Elixir, Nx (?) and vectorization
+    * Multiple Linear Regression
+    * Feature Scaling and Learning Rate
+    * Feature Engineering and Polynomial Regression
+  * Logistic Regression / Classification
+    * Classification
+    * Sigmoid function and logistic regression
+    * Decision boundary
+    * Logistic Loss
+    * Cost function for Logistic Regression
+    * Gradient Descent for Logistic Regression
+  * Common topics
+    * Linear Regression with scikit-learn
+    * Logistic Regression with scikit-learn
+    * Overfitting
+    * Regularization

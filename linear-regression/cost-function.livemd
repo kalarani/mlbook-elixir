@@ -1,0 +1,31 @@
+# Supervised Learning | Linear Regression | Cost function
+
+## Section
+
+```elixir
+# (size in 1000 square feet)
+x_train = [1.0, 2.0]
+# (price in 1000s of dollars)
+y_train = [300.0, 500.0]
+```
+
+```elixir
+defmodule LinearRegression do
+  def compute_cost(x, y, w, b) do
+    m = Enum.count(x)
+
+    cost =
+      x
+      |> Enum.with_index()
+      |> Enum.map(fn {i, index} -> (w * i + b - Enum.at(y, index)) ** 2 end)
+      |> Enum.sum()
+
+    total_cost = 1 / (2 * m) * cost
+    total_cost
+  end
+end
+```
+
+```elixir
+LinearRegression.compute_cost(x_train, y_train, 200, 50)
+```

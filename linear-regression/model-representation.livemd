@@ -1,0 +1,108 @@
+# Supervised Learning | Linear Regression | Model Representation
+
+```elixir
+Mix.install([
+  {:kino_vega_lite, "~> 0.1.7"}
+])
+```
+
+## Section
+
+The aim of this notebook is to solidify my understanding of linear regression model. To start with, we'll consider a simple linear regression with one variable.
+
+$$
+\^{y} = f(x) = wx + b
+$$
+
+where,
+
+| symbol  | description       |
+| ------- | ----------------- |
+| x       | input variable    |
+| w       | parameter: weight |
+| b       | parameter: bias   |
+| $\^{y}$ | target variable   |
+
+<!-- livebook:{"break_markdown":true} -->
+
+In this equation, x is considered as a scalar. Whereas, for supervised learning, we would need more than one input value for training. We will have a set of training data. The training data will have two elements - the input and the target. i.e., For every input variable, the training data will have the expected target. To denote the series of input and target variables, the above equation can be rewritten as:
+
+$$
+\^y^{(i)} = f_{w,b}(x)= wx^{(i)} + b
+$$
+
+Here, $x^{(i)}$ refers to the input feature in the $i$th training example in the training data set and $\^y^{(i)}$ refers to the output predicted by our linear regression model. If the training data had $m$ examples:
+
+| input variable | target variable |
+| -------------- | --------------- |
+| $x^{(0)}$      | $y^{(0)}$       |
+| $x^{(1)}$      | $y^{(1)}$       |
+| $x^{(2)}$      | $y^{(2)}$       |
+| ...            | ...             |
+| $x^{(m)}$      | $y^{(m)}$       |
+
+```elixir
+x_train = [1.0, 2.0]
+y_train = [300.0, 500.0]
+
+m = Enum.count(x_train)
+
+i = 0
+
+IO.inspect(Enum.at(x_train, i))
+IO.inspect(Enum.at(y_train, i))
+```
+
+```elixir
+data_set = %{x: x_train, y: y_train}
+```
+
+```elixir
+VegaLite.new(title: "Housing prices")
+|> VegaLite.data_from_values(data_set, only: ["x", "y"])
+|> VegaLite.mark(:point)
+|> VegaLite.encode_field(:x, "x", type: :quantitative, title: "Size")
+|> VegaLite.encode_field(:y, "y", type: :quantitative, title: "Price")
+```
+
+```elixir
+# parameters w - weight, b - bias
+w = 100
+b = 100
+```
+
+```elixir
+defmodule LinearRegression do
+  def compute_model_output(x, w, b) do
+    Enum.map(x, fn i -> w * i + b end)
+  end
+end
+```
+
+```elixir
+w = 200
+b = 100
+
+f = LinearRegression.compute_model_output(x_train, w, b)
+IO.inspect(f)
+
+predictions = %{x: x_train, y: f}
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":null,"layers":[{"active":true,"chart_type":"line","color_field":null,"color_field_aggregate":null,"color_field_bin":null,"color_field_scale_scheme":null,"color_field_type":null,"data_variable":"predictions","geodata_color":"blue","latitude_field":null,"longitude_field":null,"x_field":"x","x_field_aggregate":null,"x_field_bin":null,"x_field_scale_type":null,"x_field_type":"quantitative","y_field":"y","y_field_aggregate":null,"y_field_bin":null,"y_field_scale_type":null,"y_field_type":"quantitative"},{"active":true,"chart_type":"point","color_field":null,"color_field_aggregate":null,"color_field_bin":null,"color_field_scale_scheme":null,"color_field_type":null,"data_variable":"data_set","geodata_color":"blue","latitude_field":null,"longitude_field":null,"x_field":"x","x_field_aggregate":null,"x_field_bin":null,"x_field_scale_type":null,"x_field_type":"quantitative","y_field":"y","y_field_aggregate":null,"y_field_bin":null,"y_field_scale_type":null,"y_field_type":"quantitative"}],"vl_alias":"Elixir.VegaLite","width":null},"chunks":null,"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new()
+|> VegaLite.layers([
+  VegaLite.new()
+  |> VegaLite.data_from_values(predictions, only: ["x", "y"])
+  |> VegaLite.mark(:line)
+  |> VegaLite.encode_field(:x, "x", type: :quantitative)
+  |> VegaLite.encode_field(:y, "y", type: :quantitative),
+  VegaLite.new()
+  |> VegaLite.data_from_values(data_set, only: ["x", "y"])
+  |> VegaLite.mark(:point)
+  |> VegaLite.encode_field(:x, "x", type: :quantitative)
+  |> VegaLite.encode_field(:y, "y", type: :quantitative)
+])
+```
